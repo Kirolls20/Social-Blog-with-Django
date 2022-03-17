@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title%}
+<title>Create New Post</title>
+{% endblock %}
+
+{% block content %}
+<h2>Create Post</h2>
+<div class=' form-floating mb-3'>
+<form method="post" class='form-group'>
+   {% csrf_token %}
+   {{form|crispy}}
+   {{form.media}}
+   <br>
+  <div class="d-grid gap-2 col-6 mx-auto">
+      <input type="submit" value='Post' class= 'btn btn-outline-primary btn-lg'>
+   </div>
+   {% if form.errors%}
+      <h2>Error Here</h2>
+    {% endif %}
+<form>
+
+</div>
+{% endblock %}

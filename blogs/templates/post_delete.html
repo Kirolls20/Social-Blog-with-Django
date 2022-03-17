@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+<title>Delete Post</title>
+{% endblock %}
+
+{% block content %}
+<style>
+   .form{
+      
+      margin:30px;
+      background-color:#ebedeb;
+   }
+</style>
+<div class='container'>
+   <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+         <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'post-details' post.pk%}">Back</a></li>
+         </ol>
+   </nav>
+   <div class='form'>
+      <center>
+      <h3>Are you sure you want to delete this post?</h3>
+      <form method='post'>
+         {% csrf_token %}
+         {{form|crispy}}
+         <div>
+            <input type='submit' value=Delete class='btn btn-secondary'>
+         </div>
+      </center>
+{% endblock %}

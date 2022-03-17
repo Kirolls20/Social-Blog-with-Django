@@ -1,0 +1,7 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+{% if not user.is_authenticated %}
+<img src="{% static 'images/landing.jpg' %}">
+{% endif %}
+{% endblock %}

@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>Post Details</title>
+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/detail_post.css'%}">
+<div class="blog-single gray-bg">
+  <div class="container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'post-list'%}">Back</a></li>
+  </ol>
+</nav>
+      <div class="row align-items-start">
+          <div class="col-lg-8 m-15px-tb">
+              <article class="article">
+                  <div class="article-img">
+                     {% comment %} for image {% endcomment %}
+                  </div>
+                  <div class="article-title">
+                      <h6><a href="#">{{post.catogery}}</a></h6>
+                      <h2>{{post.title}}</h2>
+                      <span>
+                          <form method="post" action="{% url 'post-like' post.id %}">
+                              {% csrf_token %}
+                            <button type='submit' name='post_id' value={{post.id}} class='btn btn-primary btn-sm'>Like Post</button> 
+                            {{total_likes}}- likes
+                          </form>
+                      </span>
+                      <div class="media">
+                          <div class="avatar">
+                              <img src="https://bootdey.com/img/Content/avatar/avatar1.png" title="" alt="">
+                          </div>
+                          <div class="media-body">
+                              <label><a href="{% url 'user-profile' post.owner.id %}">{{post.owner}}</a></label>
+                              <span>{{post.created_at}}</span>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="article-content">
+                    {{post.body|safe}}
+                      
+                
+                </article>
+                {% if post.owner == user %}
+                    <div>
+                    <a href="{% url 'post-update' post.pk %}">
+                        <button type="button" class="btn btn-primary btn-sm">Edit Post</button>
+                    </a>
+                    <a href="{% url 'post-delete' post.pk %}">
+                        <button type="button" class="btn btn-secondary btn-sm">Delete Post</button>
+                    </a>
+                    </div>
+                {% endif %}
+                <br>
+              <div class="contact-form article-comment">
+                  <h4>Leave a Comment</h4>
+                  <form id="contact-form" method="POST" action="{% url 'create-comment' post.pk %}">
+                      {% csrf_token %}
+                      <div class="row">
+                          <div class="col-md-6">
+                            
+                          </div>
+                          <div class="col-md-12">
+                              <div class="form-group">
+                                  <textarea name="comment_body" id="message" placeholder="Your message *" rows="4" class="form-control"></textarea>
+                              </div>
+                          </div>
+                          <div class="col-md-12">
+                              <div class="send">
+                                  <button class="px-btn theme" type="submit"><span>Submit</span> <i class="arrow"></i></button>
+                              </div>
+                          </div>
+                      </div>
+                  </form>
+                  
+              </div>
+          </div>
+          
+          <div class="col-lg-4 m-15px-tb blog-aside">
+              
+              <!-- Trending Post -->
+              <div class="widget widget-post">
+                  <div class="widget-title">
+                      <h3>Trending Now</h3>
+                  </div>
+                  <div class="widget-body">
+
+                  </div>
+              </div>
+              <!-- End Trending Post -->
+              <!-- Latest Post -->
+              <div class="widget widget-latest-post">
+                  <div class="widget-title">
+                      <h3>Latest Post</h3>
+                  </div>
+                      <div class="latest-post-aside media">
+                          <div class="lpa-left media-body">
+                              {% for last in lastest_posts %}
+                              <div class="lpa-title">
+                                  <h5><a href="{% url 'post-details' last.id%}">{{last.title}}</a></h5>
+                              </div>
+                              <div class="lpa-meta">
+                                  <a class="name" href="{% url 'user-profile' last.owner.id %}">
+                                     {{last.owner.username}}
+                                  </a>
+                                  
+                                    <small>{{last.created_at}}</small>  
+                                  
+                              </div>
+                              {% endfor %}
+                          </div>
+                          <div class="lpa-right">
+                            
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- End Latest Post -->
+            
+          </div>
+      </div>
+  </div>
+</div>
+<div class="contact-form article-comment">
+    <h4> {{total_comments}} Comments</h4>
+     <ul>
+        {% for comment in comments %}
+         <div class="media"> 
+        <li>{{comment}}</li> 
+        {% comment %} <span>by{{user.username}}</span> {% endcomment %}
+    {% endfor %}
+        </ul>
+</div>
+{% endblock %}
